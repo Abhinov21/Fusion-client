@@ -73,14 +73,12 @@ h2 {
 }
 
 @media (max-width: 480px) {
-
   .custom-table th,
   .custom-table td {
     font-size: 12px;
     padding: 5px;
   }
 }
-
 
 .customButton {
   background-color: #6200ea;
@@ -144,10 +142,10 @@ a:hover {
   background-color: #25acde;
 }
 
-.module-section h2{
+.module-section h2 {
   font-size: 26px;
 }
 
-.slide-section h2{
+.slide-section h2 {
   font-size: 26px;
 }

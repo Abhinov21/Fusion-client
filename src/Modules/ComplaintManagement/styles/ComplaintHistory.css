@@ -1,10 +1,10 @@
 /* Global styles */
-body, html {
-  font-family: 'Arial', sans-serif;
+body,
+html {
+  font-family: "Arial", sans-serif;
   background-color: #f8f8f8;
   margin: 0;
   padding: 0;
-
 }
 
 /* Container to align the card to the left */
@@ -12,15 +12,13 @@ body, html {
   display: flex;
   justify-content: flex-start;
   padding-left: 2vw;
-  
-
 }
 
 /* Main card styling */
 .main-card-container {
-  border-left: 29px solid #15ABFF; /* Blue border on the left */
+  border-left: 29px solid #15abff; /* Blue border on the left */
   width: 100vw; /* Maximum width for larger screens */
-  
+
   background-color: #ffffff;
   border: 1px solid #e8e8e8;
   border-radius: 15px;
@@ -34,15 +32,14 @@ body, html {
   /*margin-top: -10vh;*/
 }
 
-#main-card{
-  border-left: 14px solid #15ABFF;
-  max-height: 900px; 
+#main-card {
+  border-left: 14px solid #15abff;
+  max-height: 900px;
   overflow: scroll;
-  
 }
 
 #main-card::-webkit-scrollbar {
-  width: 0;  /* For vertical scroll */
+  width: 0; /* For vertical scroll */
   height: 0; /* For horizontal scroll */
 }
 
@@ -52,8 +49,6 @@ body, html {
   flex-direction: row;
   justify-content: center;
   margin-top: 20px;
-  
-
 }
 
 /* Individual tab item styles */
@@ -68,7 +63,9 @@ body, html {
   display: inline-block;
   border-radius: 30px;
   background-color: #e3f4fe;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 /* Active tab style */
@@ -96,7 +93,6 @@ body, html {
   margin-bottom: 1rem;
   margin-right: 75px;
 
-  
   padding-bottom: 10px; /* Extra padding for spacing */
 }
 
@@ -105,7 +101,9 @@ body, html {
   font-weight: bold;
   font-size: 19px;
   color: #000000;
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-family:
+    "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans",
+    Arial, sans-serif;
   display: inline-flex;
   flex-direction: row;
   /*align-items: center;*/
@@ -127,22 +125,23 @@ body, html {
   width: 11vw;
   margin-right: 20px;
 }
-#content{
+#content {
   font-size: 13px;
   color: #6a6868;
   margin-bottom: -1.5vh;
 }
 
 /* Complaint details */
-.complaint-detail b{
+.complaint-detail b {
   font-size: 15px;
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-family:
+    "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans",
+    Arial, sans-serif;
   color: #333;
   margin: -2px 0;
-
 }
 
-.complaint-detail{
+.complaint-detail {
   margin-bottom: -12px;
 }
 
@@ -153,7 +152,7 @@ body, html {
   cursor: pointer;
 }
 
-#hr{
+#hr {
   width: 100%;
   margin-bottom: -10px;
 }

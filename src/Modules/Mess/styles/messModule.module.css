@@ -39,16 +39,15 @@
 }
 
 .selectinputs {
-    background-color: #15abff20;
-    border-color: #15abff4d;
+  background-color: #15abff20;
+  border-color: #15abff4d;
 }
 
 .selectinputs::placeholder {
-    color: #15abff;
-    font-weight: 600;
+  color: #15abff;
+  font-weight: 600;
 }
 
 .selectoptions:hover {
   background-color: #15abff10; /* Transparent blue hover background */
 }
-

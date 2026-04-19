@@ -47,7 +47,7 @@ h1 {
 
 .custom-table th {
   font-weight: bold;
-  background-color: white; 
+  background-color: white;
 }
 
 .custom-table td {
@@ -74,11 +74,11 @@ h1 {
 }
 
 .custom-table tbody tr:hover {
-  background-color: #f9f9f9; 
+  background-color: #f9f9f9;
 }
 
 .custom-table tbody td:hover {
-  background-color: #f9f9f9; 
+  background-color: #f9f9f9;
 }
 
 @media (max-width: 768px) {
@@ -99,9 +99,9 @@ h1 {
 
 .lastButton {
   display: flex;
-  justify-content: center; 
-  gap: 15px; 
-  margin-top: 20px; 
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
 }
 
 .submit-button {

@@ -127,7 +127,9 @@ body {
   padding: 12px 20px;
   border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
   width: 100%;
   text-align: center;
 }
@@ -190,12 +192,12 @@ body {
     font-size: 12px;
     padding: 10px 15px;
   }
-  
+
   .field-heading,
   .field-value {
     flex: 0 0 100%;
   }
-  
+
   .field-value {
     margin-left: 0;
     margin-top: 4px;
@@ -229,7 +231,7 @@ body {
     font-size: 10px;
     padding: 8px 12px;
   }
-  
+
   .section-title {
     font-size: 1rem;
   }

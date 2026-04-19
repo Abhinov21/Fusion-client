@@ -5,7 +5,7 @@
   padding: 20px;
   background-color: #f8f9fa;
   border-radius: 10px;
-  box-shadow: 0 4px 8px  #343a40;
+  box-shadow: 0 4px 8px #343a40;
 }
 
 /* Title styling */
@@ -53,16 +53,16 @@
 }
 
 /* Approved status color */
-.status-table td:last-child:contains('Approved') {
+.status-table td:last-child:contains("Approved") {
   color: #28a745;
 }
 
 /* Pending status color */
-.status-table td:last-child:contains('Pending') {
+.status-table td:last-child:contains("Pending") {
   color: #ffc107;
 }
 
 /* Rejected status color */
-.status-table td:last-child:contains('Rejected') {
+.status-table td:last-child:contains("Rejected") {
   color: #dc3545;
 }

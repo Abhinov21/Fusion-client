@@ -7,7 +7,7 @@
 }
 
 .activeLink {
-  color: #17ABFF; /* Active link color */
+  color: #17abff; /* Active link color */
   text-decoration: underline; /* Underline for active link */
 }
 
@@ -31,5 +31,5 @@
 
 /* Make caret blue when the preceding link is active */
 .ctr > .activeLink + .caret {
-  color: #17ABFF; /* Blue color for caret after the active link */
+  color: #17abff; /* Blue color for caret after the active link */
 }

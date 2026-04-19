@@ -72,7 +72,7 @@
   margin: 0 auto; /* Center it */
 }
 
-.form-container{
+.form-container {
   width: 100%;
   overflow-x: scroll;
 }
@@ -118,7 +118,7 @@
 
 .table-header {
   padding: 15px 20px;
-  background-color: #C5E2F6;
+  background-color: #c5e2f6;
   color: #3498db;
   font-size: 16px;
   text-align: center;
@@ -143,7 +143,7 @@
 
 /* Add alternating row colors */
 .table tbody tr:nth-child(even) {
-  background-color: #15ABFF1C;
+  background-color: #15abff1c;
 }
 
 .table tbody tr:nth-child(odd) {
@@ -210,5 +210,3 @@
 .table-data button:hover {
   opacity: 0.9; /* Add a hover effect for feedback */
 }
-
-

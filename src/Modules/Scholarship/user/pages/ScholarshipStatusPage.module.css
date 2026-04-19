@@ -5,7 +5,7 @@
   margin-left: 32px;
   margin-top: 20px;
   padding: 4rem;
-  border: 0.5mm solid #C9EBFF;
+  border: 0.5mm solid #c9ebff;
   border-radius: 0.5rem;
   background-color: white;
 }
@@ -33,23 +33,23 @@
 }
 
 .progressButton:hover {
-  color: #17ABFF;
+  color: #17abff;
 }
 
 .progressButton.active {
   font-weight: 600;
-  color: #17ABFF;
+  color: #17abff;
 }
 
 /* Adjusted blue underline */
 .progressButton.active::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -0.5rem;
   left: 1rem; /* Shifted right */
   width: 95%;
   height: 3px;
-  background-color: #17ABFF;
+  background-color: #17abff;
   border-radius: 2px;
 }
 
@@ -57,7 +57,7 @@
 .progressBarContainer {
   width: 95%;
   height: 0.25rem;
-  background-color: #C9EBFF;
+  background-color: #c9ebff;
   border-radius: 0.5rem;
   margin: 1.5rem 0;
   margin-left: 1rem; /* Shifted right */
@@ -70,11 +70,11 @@
     margin-left: 10px;
     padding: 2rem;
   }
-  
+
   .progressButton {
     padding: 0.75rem 0 0.75rem 1rem;
   }
-  
+
   .progressBarContainer {
     margin-left: 1rem;
   }

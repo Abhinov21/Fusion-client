@@ -14,17 +14,17 @@
 
 #pms-director-submitted-director-submitted-apps-title {
   font-weight: 700 !important;
-  text-align: left ;
+  text-align: left;
   margin-left: 0 !important;
   margin-bottom: 5px !important;
-  font-size: 24px ;
+  font-size: 24px;
 }
 
 /* Description area */
 #pms-director-submitted-director-submitted-apps-description {
   display: flex;
   flex-direction: column;
-  gap: 16px ;
+  gap: 16px;
   padding: 0 32px;
   margin-bottom: 24px !important;
 }
@@ -41,7 +41,10 @@
   color: #1976d2;
   font-size: 14px;
   font-weight: 500;
-  transition: background 0.18s, color 0.18s, border 0.18s;
+  transition:
+    background 0.18s,
+    color 0.18s,
+    border 0.18s;
   width: auto;
   margin-top: 12px;
   margin-bottom: -32px;
@@ -69,7 +72,8 @@
 }
 
 /* Table wrapper */
-#pms-director-submitted-director-submitted-apps-outer #pms-director-submitted-tableWrapper {
+#pms-director-submitted-director-submitted-apps-outer
+  #pms-director-submitted-tableWrapper {
   overflow-x: auto;
   width: 100%;
   -webkit-overflow-scrolling: touch;
@@ -78,7 +82,8 @@
 }
 
 /* Table styles - ERP theme: gray borders, light header, striped rows */
-#pms-director-submitted-director-submitted-apps-outer #pms-director-submitted-styledTable {
+#pms-director-submitted-director-submitted-apps-outer
+  #pms-director-submitted-styledTable {
   width: 100%;
   font-size: 14px;
   background-color: #e0e0e0;
@@ -91,15 +96,21 @@
   box-shadow: none;
 }
 
-#pms-director-submitted-director-submitted-apps-outer #pms-director-submitted-styledTable th,
-#pms-director-submitted-director-submitted-apps-outer #pms-director-submitted-styledTable td {
+#pms-director-submitted-director-submitted-apps-outer
+  #pms-director-submitted-styledTable
+  th,
+#pms-director-submitted-director-submitted-apps-outer
+  #pms-director-submitted-styledTable
+  td {
   padding: 14px 20px;
   vertical-align: middle;
   border: 1px solid #e0e0e0; /* Thin gray border for all cells */
   color: #222e3a;
 }
 
-#pms-director-submitted-director-submitted-apps-outer #pms-director-submitted-fusionTableHeader th {
+#pms-director-submitted-director-submitted-apps-outer
+  #pms-director-submitted-fusionTableHeader
+  th {
   padding: 16px 20px;
   text-align: left;
   background-color: #f5f7f8; /* Light gray header */
@@ -116,23 +127,29 @@
   border-left: 1px solid #e0e0e0;
 }
 
-#pms-director-submitted-director-submitted-apps-outer #pms-director-submitted-tableRow {
+#pms-director-submitted-director-submitted-apps-outer
+  #pms-director-submitted-tableRow {
   background-color: #fff;
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
 }
 
-#pms-director-submitted-director-submitted-apps-outer #pms-director-submitted-tableRow:nth-child(even) {
+#pms-director-submitted-director-submitted-apps-outer
+  #pms-director-submitted-tableRow:nth-child(even) {
   background-color: #fafafa;
 }
 
-#pms-director-submitted-director-submitted-apps-outer #pms-director-submitted-tableRow:hover {
+#pms-director-submitted-director-submitted-apps-outer
+  #pms-director-submitted-tableRow:hover {
   background-color: #f3f5f4;
   transform: translateY(-1px);
   box-shadow: none;
 }
 
 /* View Button - ERP blue theme, hover effect */
-#pms-director-submitted-director-submitted-apps-outer #pms-director-submitted-viewButton {
+#pms-director-submitted-director-submitted-apps-outer
+  #pms-director-submitted-viewButton {
   display: inline-flex;
   align-items: center;
   gap: 7px;
@@ -144,18 +161,24 @@
   border: 1.5px solid #1976d2;
   font-size: 1rem;
   cursor: pointer;
-  transition: background 0.18s, color 0.18s, border 0.18s;
+  transition:
+    background 0.18s,
+    color 0.18s,
+    border 0.18s;
 }
 
-#pms-director-submitted-director-submitted-apps-outer #pms-director-submitted-viewButton:hover,
-#pms-director-submitted-director-submitted-apps-outer #pms-director-submitted-viewButton:focus {
+#pms-director-submitted-director-submitted-apps-outer
+  #pms-director-submitted-viewButton:hover,
+#pms-director-submitted-director-submitted-apps-outer
+  #pms-director-submitted-viewButton:focus {
   background: #1976d2;
   color: #fff;
   border: 1.5px solid #1976d2;
 }
 
 /* Loader styles */
-#pms-director-submitted-director-submitted-apps-outer #pms-director-submitted-loader-container {
+#pms-director-submitted-director-submitted-apps-outer
+  #pms-director-submitted-loader-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -193,11 +216,15 @@
     padding: 16px;
     border-radius: 6px;
   }
-  #pms-director-submitted-director-submitted-apps-outer #pms-director-submitted-fusionTableHeader th {
+  #pms-director-submitted-director-submitted-apps-outer
+    #pms-director-submitted-fusionTableHeader
+    th {
     padding: 10px 12px;
     font-size: 12px;
   }
-  #pms-director-submitted-director-submitted-apps-outer #pms-director-submitted-tableRow td {
+  #pms-director-submitted-director-submitted-apps-outer
+    #pms-director-submitted-tableRow
+    td {
     padding: 10px 12px;
     font-size: 12px;
   }

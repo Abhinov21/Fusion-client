@@ -41,7 +41,10 @@
   color: #1976d2;
   font-size: 14px;
   font-weight: 500;
-  transition: background 0.18s, color 0.18s, border 0.18s;
+  transition:
+    background 0.18s,
+    color 0.18s,
+    border 0.18s;
   width: auto;
   margin-top: 12px;
   margin-bottom: -32px;
@@ -118,7 +121,9 @@
 
 #pms-reviewed-apps-outer #pms-reviewed-tableRow {
   background-color: #fff;
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
 }
 
 #pms-reviewed-apps-outer #pms-reviewed-tableRow:nth-child(even) {

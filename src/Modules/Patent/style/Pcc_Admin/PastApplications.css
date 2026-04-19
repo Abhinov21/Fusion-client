@@ -30,7 +30,7 @@
   padding: 48px 0;
   background: #fff;
   border-radius: 10px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
   margin: 32px 0;
   text-align: center;
 }
@@ -100,10 +100,18 @@
   color: #fff;
   background: #bdbdbd;
 }
-.status-badge.approved { background: #4caf50; }
-.status-badge.rejected { background: #e53935; }
-.status-badge.pending { background: #ffb300; }
-.status-badge.default { background: #bdbdbd; }
+.status-badge.approved {
+  background: #4caf50;
+}
+.status-badge.rejected {
+  background: #e53935;
+}
+.status-badge.pending {
+  background: #ffb300;
+}
+.status-badge.default {
+  background: #bdbdbd;
+}
 
 /* View Button */
 .view-button,

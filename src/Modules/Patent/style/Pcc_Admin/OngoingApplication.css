@@ -8,7 +8,7 @@
   margin-top: 10px;
   margin-left: 59px;
 }
-.status-update-group{
+.status-update-group {
   margin-left: 0px;
 }
 /* Container Styles */
@@ -44,7 +44,7 @@
 }
 
 /* Loading and Error States */
-.loading-container, 
+.loading-container,
 .error-container,
 .empty-container {
   display: flex;
@@ -64,7 +64,9 @@
   padding-top: 10px;
   background-color: #ffffff;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.05);
+  box-shadow:
+    0 4px 8px rgba(0, 0, 0, 0.08),
+    0 2px 4px rgba(0, 0, 0, 0.05);
   overflow: hidden;
 }
 
@@ -83,8 +85,12 @@
   border-radius: 10px;
   background-color: #ffffff;
   /* Paper-like shadow */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow:
+    0 4px 8px rgba(0, 0, 0, 0.08),
+    0 2px 4px rgba(0, 0, 0, 0.05);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
   cursor: pointer;
 }
 
@@ -132,14 +138,18 @@
   background-color: transparent;
   border-radius: 8px;
   /* Paper-like shadow for detail view */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.07);
+  box-shadow:
+    0 6px 12px rgba(0, 0, 0, 0.1),
+    0 3px 6px rgba(0, 0, 0, 0.07);
   margin-top: 20px;
 }
 
 .back-button {
   margin-bottom: 20px;
   font-size: 0.9rem;
-  transition: color 0.2s, border-color 0.2s;
+  transition:
+    color 0.2s,
+    border-color 0.2s;
 }
 
 /* Year Filter Styles */
@@ -147,5 +157,4 @@
 .year-filter {
   min-width: 200px;
   max-width: 300px;
-  
 }

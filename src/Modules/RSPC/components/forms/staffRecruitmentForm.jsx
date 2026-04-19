@@ -15,7 +15,6 @@ import {
   Text,
   Divider,
   Radio,
-  Alert,
   Textarea,
   Table,
   Badge,
@@ -26,8 +25,6 @@ import {
 } from "@mantine/core";
 import {
   User,
-  ThumbsDown,
-  ThumbsUp,
   Trash,
   FileText,
   PlusCircle,
@@ -38,23 +35,26 @@ import {
   ArrowsDownUp,
 } from "@phosphor-icons/react";
 import { useForm } from "@mantine/form";
-import axios from "axios";
+
 import { badgeColor } from "../../helpers/badgeColours";
 import StaffViewModal from "../modals/staffViewModal";
 import tableClasses from "../../styles/tableStyle.module.css";
 import classes from "../../styles/formStyle.module.css";
-import {
-  advertisementAndCommitteeApprovalFormSubmissionRoute,
-  fetchProfIDsRoute,
-  fetchStaffPositionsRoute,
-  fetchStaffRoute,
-} from "../../../../routes/RSPCRoutes";
+import { fetchProfIDsRoute } from "../../../../routes/RSPCRoutes";
 import SelectionCommitteeReportFormModal from "../modals/selectionCommitteeReportFormModal";
 import ConfirmationModal from "../../helpers/confirmationModal";
+import {
+  fetchStaff,
+  fetchStaffPositions,
+  submitAdvertisementAndCommittee,
+} from "../../services/rspcApi";
+import useTableSort from "../../hooks/useTableSort";
+import useFormSubmit from "../../hooks/useFormSubmit";
 
 function StaffRecruitmentForm({ projectData }) {
   const [scrolled, setScrolled] = useState(false);
   const [fetched, setFetched] = useState(true);
+  const [staffRequests, setStaffRequests] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedStaff, setSelectedStaff] = useState(null);
   const role = useSelector((state) => state.user.role);
@@ -62,64 +62,13 @@ function StaffRecruitmentForm({ projectData }) {
   const [reportModalOpened, setReportModalOpened] = useState(false);
   const [confirmationModalOpened, setConfirmationModalOpened] = useState(false);
 
+  // Use table sorting hook instead of inline sorting logic
+  const { sortedData, sortConfig, requestSort } = useTableSort();
+
   const handleViewClick = (row) => {
     setSelectedStaff(row);
     setViewModalOpened(true);
   };
-
-  const [sortColumn, setSortColumn] = useState(null);
-  const [sortDirection, setSortDirection] = useState("asc");
-  const sortData = (data, column) => {
-    const sorted = [...data].sort((a, b) => {
-      if (a[column] === null || a[column] === undefined) return 1;
-      if (b[column] === null || b[column] === undefined) return -1;
-
-      const aValue =
-        typeof a[column] === "string" ? a[column].toLowerCase() : a[column];
-      const bValue =
-        typeof b[column] === "string" ? b[column].toLowerCase() : b[column];
-
-      if (aValue < bValue) return sortDirection === "asc" ? -1 : 1;
-      if (aValue > bValue) return sortDirection === "asc" ? 1 : -1;
-      return 0;
-    });
-    return sorted;
-  };
-  const handleSort = (column) => {
-    if (sortColumn === column) {
-      setSortDirection((prev) => (prev === "asc" ? "desc" : "asc"));
-    } else {
-      setSortColumn(column);
-      setSortDirection("asc");
-    }
-  };
-  const [staffRequests, setStaffRequests] = useState([]);
-  useEffect(() => {
-    setLoading(true);
-    const fetchStaffData = async () => {
-      const token = localStorage.getItem("authToken");
-      if (!token) return console.error("No authentication token found!");
-
-      try {
-        const response = await axios.get(fetchStaffRoute, {
-          params: { "pids[]": [projectData.pid], role, type: 1 },
-          headers: {
-            Authorization: `Token ${token}`,
-            "Content-Type": "application/json",
-          },
-          withCredentials: true, // Include credentials if necessary
-        });
-        console.log("Fetched Staff:", response.data);
-        setStaffRequests(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error during fetching details:", error);
-        setLoading(false);
-        setFetched(false);
-      }
-    };
-    fetchStaffData();
-  }, projectData);
 
   const navigate = useNavigate();
   const handleActionClick = (row) => {
@@ -127,59 +76,82 @@ function StaffRecruitmentForm({ projectData }) {
     setReportModalOpened(true);
   };
 
-  const displayedStaff = sortColumn
-    ? sortData(staffRequests, sortColumn)
-    : staffRequests;
-  const staffRows = displayedStaff.map((row, index) => (
-    <Table.Tr key={index}>
-      <Table.Td className={tableClasses["row-content"]}>
-        <Badge
-          color={badgeColor[row.approval]}
-          size="lg"
-          style={{ minWidth: "180px", color: "#3f3f3f" }}
-        >
-          {row.approval}
-        </Badge>
-      </Table.Td>
-      <Table.Td className={tableClasses["row-content"]}>{row.type}</Table.Td>
-      <Table.Td className={tableClasses["row-content"]}>{row.sid}</Table.Td>
-      <Table.Td className={tableClasses["row-content"]}>
-        {row.person ? row.person : "TBD"}
-      </Table.Td>
-      <Table.Td className={tableClasses["row-content"]}>
-        {row.duration > 0 ? `${row.duration} months` : "---"}
-      </Table.Td>
-      {role.includes("Professor") && (
+  // Fetch staff data using service layer
+  useEffect(() => {
+    if (!projectData?.pid) return;
+
+    const loadStaffData = async () => {
+      setLoading(true);
+      try {
+        const response = await fetchStaff({
+          "pids[]": [projectData.pid],
+          role,
+          type: 1,
+        });
+        setStaffRequests(response);
+        setFetched(true);
+      } catch (error) {
+        console.error("Error fetching staff:", error);
+        setFetched(false);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadStaffData();
+  }, [projectData?.pid]);
+  const staffRows = (sortedData(staffRequests) || staffRequests).map(
+    (row, index) => (
+      <Table.Tr key={index}>
+        <Table.Td className={tableClasses["row-content"]}>
+          <Badge
+            color={badgeColor[row.approval]}
+            size="lg"
+            style={{ minWidth: "180px", color: "#3f3f3f" }}
+          >
+            {row.approval}
+          </Badge>
+        </Table.Td>
+        <Table.Td className={tableClasses["row-content"]}>{row.type}</Table.Td>
+        <Table.Td className={tableClasses["row-content"]}>{row.sid}</Table.Td>
+        <Table.Td className={tableClasses["row-content"]}>
+          {row.person ? row.person : "TBD"}
+        </Table.Td>
+        <Table.Td className={tableClasses["row-content"]}>
+          {row.duration > 0 ? `${row.duration} months` : "---"}
+        </Table.Td>
+        {role.includes("Professor") && (
+          <Table.Td className={tableClasses["row-content"]}>
+            <Button
+              onClick={() => handleActionClick(row)}
+              variant="outline"
+              color="#15ABFF"
+              size="xs"
+              disabled={
+                row.approval !== "Hiring" || projectData.status !== "OnGoing"
+              }
+              style={{ borderRadius: "8px" }}
+            >
+              <FileText size={26} style={{ marginRight: "3px" }} />
+              Committee Report
+            </Button>
+          </Table.Td>
+        )}
         <Table.Td className={tableClasses["row-content"]}>
           <Button
-            onClick={() => handleActionClick(row)}
+            onClick={() => handleViewClick(row)}
             variant="outline"
             color="#15ABFF"
             size="xs"
-            disabled={
-              row.approval !== "Hiring" || projectData.status !== "OnGoing"
-            }
             style={{ borderRadius: "8px" }}
           >
-            <FileText size={26} style={{ marginRight: "3px" }} />
-            Committee Report
+            <Eye size={26} style={{ margin: "3px" }} />
+            View
           </Button>
         </Table.Td>
-      )}
-      <Table.Td className={tableClasses["row-content"]}>
-        <Button
-          onClick={() => handleViewClick(row)}
-          variant="outline"
-          color="#15ABFF"
-          size="xs"
-          style={{ borderRadius: "8px" }}
-        >
-          <Eye size={26} style={{ margin: "3px" }} />
-          View
-        </Button>
-      </Table.Td>
-    </Table.Tr>
-  ));
+      </Table.Tr>
+    ),
+  );
 
   const [advertisements, setAdvertisements] = useState([
     {
@@ -199,9 +171,30 @@ function StaffRecruitmentForm({ projectData }) {
     { role: "RSPC Nominee", name: "" },
   ]);
   const [postFile, setPostFile] = useState(null);
-  const [successAlertVisible, setSuccessAlertVisible] = useState(false);
-  const [failureAlertVisible, setFailureAlertVisible] = useState(false);
   const [showForm, setShowForm] = useState(false);
+
+  // Prepare form submission function for useFormSubmit hook
+  const submitFormData = async (values) => {
+    const formData = new FormData();
+    formData.append("has_funds", values.has_funds);
+    if (postFile) {
+      formData.append("post_on_website", postFile);
+    }
+    formData.append("pid", projectData.pid);
+    formData.append("positions", JSON.stringify(positions));
+    formData.append("advertisements", JSON.stringify(advertisements));
+    const updatedMembers = [
+      ...members,
+      ...projectData.copis.map((copi) => ({ role: "Co-PI", name: copi })),
+    ];
+    formData.append("members", JSON.stringify(updatedMembers));
+
+    await submitAdvertisementAndCommittee(formData);
+    navigate("/research");
+  };
+
+  // Use form submission hook
+  const { handleSubmit, submitting } = useFormSubmit(submitFormData);
 
   const [profIDs, setProfIDs] = useState([]);
   useEffect(() => {
@@ -210,7 +203,7 @@ function StaffRecruitmentForm({ projectData }) {
       try {
         const parsedProfIDs = JSON.parse(storedProfIDs);
         if (Array.isArray(parsedProfIDs) && parsedProfIDs.length > 0) {
-          setProfIDs(parsedProfIDs); // Use stored data if valid
+          setProfIDs(parsedProfIDs);
           return;
         }
       } catch (error) {
@@ -218,77 +211,69 @@ function StaffRecruitmentForm({ projectData }) {
       }
     }
 
-    const fetchProfIDs = async () => {
-      const token = localStorage.getItem("authToken");
-      if (!token) return console.error("No authentication token found!");
+    // Note: fetchProfIDs needs to be added to service layer if not already present
+    // For now, keep existing localStorage pattern as it functions as a cache
+    const token = localStorage.getItem("authToken");
+    if (!token) return;
+
+    const fetchProfIDsData = async () => {
       try {
-        const response = await axios.get(fetchProfIDsRoute, {
+        // You can replace this with a service layer call when available
+        const response = await fetch(fetchProfIDsRoute, {
           headers: {
             Authorization: `Token ${token}`,
             "Content-Type": "application/json",
           },
-          withCredentials: true,
         });
-        const profIDsArray = response.data.profIDs;
+        const data = await response.json();
+        const profIDsArray = data.profIDs;
         if (Array.isArray(profIDsArray) && profIDsArray.length > 0) {
-          localStorage.setItem("profIDs", JSON.stringify(profIDsArray)); // Store only array
+          localStorage.setItem("profIDs", JSON.stringify(profIDsArray));
           setProfIDs(profIDsArray);
         }
       } catch (error) {
-        console.error("Error during Axios GET:", error);
+        console.error("Error fetching professor IDs:", error);
       }
     };
-    fetchProfIDs();
+    fetchProfIDsData();
   }, []);
 
   const [positions, setPositions] = useState([
     { type: "", available: "", occupied: "", incumbents: "" },
   ]);
   useEffect(() => {
-    if (projectData) {
-      setLoading(true);
-      const fetchStaffPositions = async () => {
-        const token = localStorage.getItem("authToken");
-        if (!token) return console.error("No authentication token found!");
-        try {
-          const response = await axios.get(
-            fetchStaffPositionsRoute(projectData.pid),
-            {
-              headers: {
-                Authorization: `Token ${token}`,
-                "Content-Type": "application/json",
-              },
-              withCredentials: true,
-            },
-          );
-          console.log("Fetched Staff Positions:", response.data);
+    if (!projectData?.pid) return;
 
-          const parsedPositions = Object.entries(response.data.positions).map(
-            ([type, [available, occupied]]) => ({
-              type,
-              available,
-              occupied,
-              incumbents: response.data.incumbents[type] || [],
-            }),
-          );
-          if (parsedPositions.length === 0) {
-            parsedPositions.push({
-              type: "",
-              available: "",
-              occupied: "",
-              incumbents: [],
-            });
-          }
-          setPositions(parsedPositions);
-          setLoading(false);
-        } catch (error) {
-          console.error("Error during Axios GET:", error);
-          setLoading(false);
+    const loadPositions = async () => {
+      setLoading(true);
+      try {
+        const response = await fetchStaffPositions(projectData.pid);
+        const parsedPositions = Object.entries(response.positions).map(
+          ([type, [available, occupied]]) => ({
+            type,
+            available,
+            occupied,
+            incumbents: response.incumbents[type] || [],
+          }),
+        );
+        if (parsedPositions.length === 0) {
+          parsedPositions.push({
+            type: "",
+            available: "",
+            occupied: "",
+            incumbents: [],
+          });
         }
-      };
-      fetchStaffPositions();
-    }
-  }, [projectData]);
+        setPositions(parsedPositions);
+      } catch (error) {
+        console.error("Error fetching staff positions:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadPositions();
+  }, [projectData?.pid]);
 
   const form = useForm({
     initialValues: {
@@ -383,53 +368,6 @@ function StaffRecruitmentForm({ projectData }) {
     setMembers(members.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = async (values) => {
-    const token = localStorage.getItem("authToken");
-    if (!token) return console.error("No authentication token found!");
-    try {
-      const formData = new FormData();
-      formData.append("has_funds", values.has_funds);
-      if (postFile) {
-        formData.append("post_on_website", postFile);
-      }
-      formData.append("pid", projectData.pid);
-      formData.append("positions", JSON.stringify(positions));
-      formData.append("advertisements", JSON.stringify(advertisements));
-      const updatedMembers = [
-        ...members,
-        ...projectData.copis.map((copi) => ({ role: "Co-PI", name: copi })),
-      ];
-      formData.append("members", JSON.stringify(updatedMembers));
-      formData.forEach((value, key) => {
-        console.log(key, value);
-      });
-
-      const response = await axios.post(
-        advertisementAndCommitteeApprovalFormSubmissionRoute,
-        formData,
-        {
-          headers: {
-            Authorization: `Token ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
-          withCredentials: true,
-        },
-      );
-
-      console.log("Form submitted successfully:", response.data);
-      setSuccessAlertVisible(true);
-      setTimeout(() => {
-        setSuccessAlertVisible(false);
-        navigate("/research");
-      }, 2500);
-    } catch (error) {
-      console.error("Error during Axios POST:", error);
-      setFailureAlertVisible(true);
-      setTimeout(() => {
-        setFailureAlertVisible(false);
-      }, 2500);
-    }
-  };
   const handleFormSubmit = () => {
     if (form.validate().hasErrors) return;
     setConfirmationModalOpened(true);
@@ -481,7 +419,7 @@ function StaffRecruitmentForm({ projectData }) {
               <Table.Tr>
                 <Table.Th
                   className={tableClasses["header-cell"]}
-                  onClick={() => handleSort("approval")}
+                  onClick={() => requestSort("approval")}
                 >
                   <div
                     style={{
@@ -491,8 +429,8 @@ function StaffRecruitmentForm({ projectData }) {
                     }}
                   >
                     Status
-                    {sortColumn === "approval" ? (
-                      sortDirection === "asc" ? (
+                    {sortConfig.column === "approval" ? (
+                      sortConfig.direction === "asc" ? (
                         <ArrowUp size={16} style={{ marginLeft: "5px" }} />
                       ) : (
                         <ArrowDown size={16} style={{ marginLeft: "5px" }} />
@@ -504,7 +442,7 @@ function StaffRecruitmentForm({ projectData }) {
                 </Table.Th>
                 <Table.Th
                   className={tableClasses["header-cell"]}
-                  onClick={() => handleSort("type")}
+                  onClick={() => requestSort("type")}
                 >
                   <div
                     style={{
@@ -514,8 +452,8 @@ function StaffRecruitmentForm({ projectData }) {
                     }}
                   >
                     Designation
-                    {sortColumn === "type" ? (
-                      sortDirection === "asc" ? (
+                    {sortConfig.column === "type" ? (
+                      sortConfig.direction === "asc" ? (
                         <ArrowUp size={16} style={{ marginLeft: "5px" }} />
                       ) : (
                         <ArrowDown size={16} style={{ marginLeft: "5px" }} />
@@ -527,7 +465,7 @@ function StaffRecruitmentForm({ projectData }) {
                 </Table.Th>
                 <Table.Th
                   className={tableClasses["header-cell"]}
-                  onClick={() => handleSort("sid")}
+                  onClick={() => requestSort("sid")}
                 >
                   <div
                     style={{
@@ -537,8 +475,8 @@ function StaffRecruitmentForm({ projectData }) {
                     }}
                   >
                     Staff ID
-                    {sortColumn === "sid" ? (
-                      sortDirection === "asc" ? (
+                    {sortConfig.column === "sid" ? (
+                      sortConfig.direction === "asc" ? (
                         <ArrowUp size={16} style={{ marginLeft: "5px" }} />
                       ) : (
                         <ArrowDown size={16} style={{ marginLeft: "5px" }} />
@@ -550,7 +488,7 @@ function StaffRecruitmentForm({ projectData }) {
                 </Table.Th>
                 <Table.Th
                   className={tableClasses["header-cell"]}
-                  onClick={() => handleSort("person")}
+                  onClick={() => requestSort("person")}
                 >
                   <div
                     style={{
@@ -560,8 +498,8 @@ function StaffRecruitmentForm({ projectData }) {
                     }}
                   >
                     Staff Name
-                    {sortColumn === "person" ? (
-                      sortDirection === "asc" ? (
+                    {sortConfig.column === "person" ? (
+                      sortConfig.direction === "asc" ? (
                         <ArrowUp size={16} style={{ marginLeft: "5px" }} />
                       ) : (
                         <ArrowDown size={16} style={{ marginLeft: "5px" }} />
@@ -573,7 +511,7 @@ function StaffRecruitmentForm({ projectData }) {
                 </Table.Th>
                 <Table.Th
                   className={tableClasses["header-cell"]}
-                  onClick={() => handleSort("duration")}
+                  onClick={() => requestSort("duration")}
                 >
                   <div
                     style={{
@@ -583,8 +521,8 @@ function StaffRecruitmentForm({ projectData }) {
                     }}
                   >
                     Duration
-                    {sortColumn === "duration" ? (
-                      sortDirection === "asc" ? (
+                    {sortConfig.column === "duration" ? (
+                      sortConfig.direction === "asc" ? (
                         <ArrowUp size={16} style={{ marginLeft: "5px" }} />
                       ) : (
                         <ArrowDown size={16} style={{ marginLeft: "5px" }} />
@@ -1383,32 +1321,6 @@ function StaffRecruitmentForm({ projectData }) {
         onClose={() => setReportModalOpened(false)}
         staffData={selectedStaff}
       />
-
-      {(successAlertVisible || failureAlertVisible) && (
-        <div className={classes.overlay}>
-          <Alert
-            variant="filled"
-            color={successAlertVisible ? "#85B5D9" : "red"}
-            title={
-              successAlertVisible
-                ? "Form Submission Successful"
-                : "Form Submission Failed"
-            }
-            icon={
-              successAlertVisible ? (
-                <ThumbsUp size={96} />
-              ) : (
-                <ThumbsDown size={96} />
-              )
-            }
-            className={classes.alertBox}
-          >
-            {successAlertVisible
-              ? "The form has been successfully submitted! Your request will be processed soon!"
-              : "The form details could not be saved! Please verify the filled details and submit the form again."}
-          </Alert>
-        </div>
-      )}
     </>
   );
 }

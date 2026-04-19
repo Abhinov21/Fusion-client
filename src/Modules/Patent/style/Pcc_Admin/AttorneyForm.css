@@ -57,9 +57,10 @@
   border-radius: 10px;
   border: 2px solid #f0f0f0;
   padding: 1.25rem 1.5rem;
-  transition: background-color 0.3s ease, border-left 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    border-left 0.3s ease;
 }
-
 
 /* Detail Text */
 #pms-pcc-attorney-detail {

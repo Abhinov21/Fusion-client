@@ -8,7 +8,7 @@
   background-color: #f5f8f9;
   padding: 2rem 4%;
   box-sizing: border-box;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .mobile-form-container {
@@ -54,14 +54,17 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 #pms-pcc-new-app-detail-container1 > div:first-child .mantine-Button:hover {
   background-color: #1e66f5;
   color: #ffffff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
 #pms-pcc-detail-page-title {
@@ -97,7 +100,9 @@
 #pms-pcc-action-button {
   min-width: 180px;
   font-weight: 500;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
 }
 
 /* Blue Download button */
@@ -194,7 +199,7 @@
 #pms-pcc-detail-section {
   background-color: #ffffff;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   margin: 1.5rem auto;
   max-width: 1200px;
   padding: 1.5rem 2rem;
@@ -225,8 +230,10 @@
   border-radius: 8px;
   padding: 1rem;
   text-align: center;
-  box-shadow: 0 1px 6px rgba(0,0,0,0.04);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.04);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 #pms-pcc-key-date-card:hover {
@@ -253,7 +260,7 @@
 #pms-pcc-applicant-card {
   background-color: #ffffff;
   border-radius: 6px;
-  box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
   padding: 1rem;
   margin-bottom: 1rem;
 }
@@ -267,7 +274,7 @@
 
 .mantine-Modal-root .mantine-Modal-inner {
   border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
 

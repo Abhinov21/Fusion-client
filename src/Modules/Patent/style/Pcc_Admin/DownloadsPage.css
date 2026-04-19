@@ -66,12 +66,14 @@
 }
 
 /* Button styling */
-#pms-pcc-download-button, #pms-pcc-delete-button {
+#pms-pcc-download-button,
+#pms-pcc-delete-button {
   min-width: 120px;
   transition: all 0.2s ease;
 }
 
-#pms-pcc-download-button:hover, #pms-pcc-delete-button:hover {
+#pms-pcc-download-button:hover,
+#pms-pcc-delete-button:hover {
   transform: translateY(-1px);
 }
 
@@ -128,7 +130,6 @@
 
 /* ...rest of your styles... */
 
-
 @media (max-width: 480px) {
   #pms-pcc-page-heading-title {
     font-size: 20px;
@@ -151,7 +152,8 @@
     padding: 0.5rem;
   }
 
-  #pms-pcc-download-button, #pms-pcc-delete-button {
+  #pms-pcc-download-button,
+  #pms-pcc-delete-button {
     font-size: 12px;
     padding: 4px 8px;
   }
@@ -182,4 +184,3 @@
   background-color: #0073e6;
   color: #fff;
 }
-

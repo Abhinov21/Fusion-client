@@ -5,7 +5,7 @@
   margin-top: 20px;
   justify-content: center;
   align-items: flex-start;
-  border: 0.5mm solid #C9EBFF;
+  border: 0.5mm solid #c9ebff;
 }
 
 .wrapper {
@@ -28,7 +28,7 @@
   border: none;
   background: none;
   font-size: 1.1rem; /* Increased heading size */
-  font-weight: normal; 
+  font-weight: normal;
 }
 
 .progressBar {
@@ -50,7 +50,7 @@
 }
 
 .activeProgress {
-  background-color: #17ABFF;
+  background-color: #17abff;
 }
 
 .inactiveProgress {

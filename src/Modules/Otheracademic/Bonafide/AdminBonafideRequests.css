@@ -12,7 +12,7 @@
   font-size: 24px;
   margin-bottom: 20px;
   color: #17191b;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 table {
@@ -20,7 +20,8 @@ table {
   border-collapse: collapse;
 }
 
-th, td {
+th,
+td {
   padding: 12px 15px;
   text-align: left;
 }

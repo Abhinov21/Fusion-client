@@ -20,11 +20,11 @@
   font-weight: 700;
   text-align: left;
 }
-.stati-title{
+.stati-title {
   font-size: 2rem;
-    color: #333;
-    margin-bottom: 16px;
-    font-weight: 700;
+  color: #333;
+  margin-bottom: 16px;
+  font-weight: 700;
   text-align: left;
 }
 
@@ -51,15 +51,19 @@
   border-radius: 10px;
   background-color: #ffffff;
   /* Paper-like shadow */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow:
+    0 4px 8px rgba(0, 0, 0, 0.08),
+    0 2px 4px rgba(0, 0, 0, 0.05);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
   cursor: pointer;
 }
 
 .status-card:hover {
   /* Stronger shadow on hover to enhance floating effect */
   box-shadow: 0px 8px 30px rgba(0, 0, 0, 0.15);
-  
+
   transform: translateY(-5px);
 }
 
@@ -81,10 +85,10 @@
 /* Button Styles */
 .view-button {
   color: #0073e6;
-    background-color: #ffffff;
-    border: 1px solid #0073e6;
-    font-weight: 500;
-    padding: 1px;
+  background-color: #ffffff;
+  border: 1px solid #0073e6;
+  font-weight: 500;
+  padding: 1px;
 }
 
 .view-button:hover {
@@ -97,15 +101,17 @@
   background-color: #ffffff;
   border-radius: 8px;
   /* Paper-like shadow for detail view */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.07);
+  box-shadow:
+    0 6px 12px rgba(0, 0, 0, 0.1),
+    0 3px 6px rgba(0, 0, 0, 0.07);
   margin-top: 20px;
 }
 
 .back-button {
   margin-bottom: 20px;
   font-size: 0.9rem;
-  
-  transition: color 0.2s, border-color 0.2s;
+
+  transition:
+    color 0.2s,
+    border-color 0.2s;
 }
-
-

@@ -3,7 +3,7 @@
   position: relative;
   /* width: 100%; */
 }
-.detail-container1{
+.detail-container1 {
   background-color: transparent;
   width: 100%;
   /* margin-left: 100px;
@@ -14,16 +14,14 @@
 .outerContainer {
   max-width: none;
   padding: 24px 50px;
-  background-color:transparent;
+  background-color: transparent;
   margin-left: 25px;
   border-radius: 12px;
   margin-bottom: 20px;
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0);
   /* overflow: hidden; */
   /* transition: all 0.3s ease; */
-  
 }
-
 
 .new-application-title {
   font-size: 24px;
@@ -35,7 +33,7 @@
 }
 
 .title::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -8px;
   left: 30px;
@@ -68,8 +66,6 @@
   margin-bottom: 0;
 }
 
-
-
 /* Responsive Table */
 .styledTable {
   width: 100%;
@@ -98,7 +94,9 @@
 
 .tableRow {
   background-color: #ffffff;
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .tableRow:hover {

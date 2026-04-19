@@ -265,7 +265,6 @@ function MCMApplications() {
                 className: styles.stripedRow,
               })}
             />
-
           )}
           <Modal
             opened={fileModalOpened}

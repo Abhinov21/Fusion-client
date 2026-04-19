@@ -1,4 +1,3 @@
-import axios from "axios";
 import {
   SortAscending,
   CaretCircleLeft,
@@ -9,73 +8,42 @@ import { Tabs, Button, Flex, Select, Text } from "@mantine/core";
 import { useSelector } from "react-redux";
 import classes from "./styles/researchProjectsStyle.module.css";
 import ProjectTable from "./components/tables/projectTable.jsx";
-import ProjectAdditionForm from "./components/forms/projectAdditionForm.jsx";
-import { fetchProjectsRoute, fetchPIDsRoute } from "../../routes/RSPCRoutes";
+import ProjectAdditionForm from "./components/forms/ProjectAdditionForm.jsx";
 import InboxTable from "./components/tables/inboxTable.jsx";
 import Appendix from "./components/forms/appendix.jsx";
 import RSPCBreadcrumbs from "./components/RSPCBreadcrumbs.jsx";
 import FilterTable from "./components/tables/filterTable.jsx";
+import useProjectData from "./hooks/useProjectData.js";
+import { isProfessor, isHOD } from "./utils/roleMapper.js";
 
 const categories = ["Most Recent", "Ongoing", "Completed", "Terminated"];
 
+/**
+ * ResearchProjects - Main page for research project management
+ * Displays projects, inbox, forms based on user role
+ * Uses useProjectData hook for data fetching
+ */
 function ResearchProjects() {
   const role = useSelector((state) => state.user.role);
-  const [PIDs, setPIDs] = useState([]);
-  const [projectsData, setProjectsData] = useState([]);
   const [activeTab, setActiveTab] = useState("0");
   const [sortedBy, setSortedBy] = useState("Most Recent");
   const tabsListRef = useRef(null);
 
+  // Use custom hook for project data
+  const { projects, pids, loading, error, refreshData } = useProjectData(role);
+
+  // Refresh data when role changes
   useEffect(() => {
-    const fetchPIDs = async () => {
-      const token = localStorage.getItem("authToken");
-      if (!token) return console.error("No authentication token found!");
-      try {
-        const response = await axios.get(fetchPIDsRoute(role), {
-          headers: {
-            Authorization: `Token ${token}`,
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        });
-        console.log("Fetched PIDs:", response.data);
-        setPIDs(response.data);
-      } catch (error) {
-        console.error("Error during Axios GET:", error);
-      }
-    };
-    fetchPIDs();
+    if (role) {
+      refreshData();
+    }
   }, [role]);
-
-  useEffect(() => {
-    const fetchProjects = async () => {
-      const token = localStorage.getItem("authToken");
-      if (!token) return console.error("No authentication token found!");
-      if (PIDs.length === 0) return;
-
-      try {
-        const response = await axios.get(fetchProjectsRoute, {
-          params: { "pids[]": PIDs },
-          headers: {
-            Authorization: `Token ${token}`,
-            "Content-Type": "application/json",
-          },
-          withCredentials: true, // Include credentials if necessary
-        });
-        console.log("Fetched Projects:", response.data);
-        setProjectsData(response.data); // Store the fetched projects data
-      } catch (error) {
-        console.error("Error during Axios GET:", error);
-      }
-    };
-    fetchProjects();
-  }, [PIDs]);
 
   const tabItems = [
     {
       title: "Projects",
       component: (
-        <ProjectTable setActiveTab={setActiveTab} projectsData={projectsData} />
+        <ProjectTable setActiveTab={setActiveTab} projectsData={projects} />
       ),
     },
     {
@@ -83,109 +51,122 @@ function ResearchProjects() {
       component: <InboxTable setActiveTab={setActiveTab} />,
     },
   ];
-  if (role.includes("Professor")) {
+
+  // Add role-based tabs
+  if (isProfessor(role)) {
     tabItems.push({
       title: "New Project Proposal",
       component: <ProjectAdditionForm setActiveTab={setActiveTab} />,
     });
-  } else if (!role.includes("HOD")) {
+  } else if (!isHOD(role)) {
     tabItems.push({
       title: "Data Filter",
       component: <FilterTable />,
     });
   }
+
   tabItems.push({
     title: "Form Appendix",
     component: <Appendix />,
   });
 
-  const handleTabChange = (direction) => {
-    const newIndex =
-      direction === "next"
-        ? Math.min(+activeTab + 1, tabItems.length - 1)
-        : Math.max(+activeTab - 1, 0);
-    setActiveTab(String(newIndex));
-    tabsListRef.current.scrollBy({
-      left: direction === "next" ? 50 : -50,
-      behavior: "smooth",
-    });
+  const handleScroll = (direction) => {
+    const container = tabsListRef.current;
+    if (container) {
+      const scrollAmount = 200;
+      if (direction === "left") {
+        container.scrollLeft -= scrollAmount;
+      } else {
+        container.scrollLeft += scrollAmount;
+      }
+    }
   };
 
+  if (error) {
+    return (
+      <div className={classes.pageContainer}>
+        <div style={{ padding: "20px", color: "red" }}>
+          <Text>Error loading projects: {error}</Text>
+          <Button onClick={refreshData} mt="md">
+            Retry
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <>
+    <div className={classes.pageContainer}>
       <RSPCBreadcrumbs />
-      <Flex justify="space-between" align="center" mt="lg">
-        <Flex
-          justify="flex-start"
-          align="center"
-          gap={{ base: "0.5rem", md: "1rem" }}
-          mt={{ base: "1rem", md: "1.5rem" }}
-          ml={{ md: "lg" }}
-        >
-          <Button
-            onClick={() => handleTabChange("prev")}
-            variant="default"
-            p={0}
-            style={{ border: "none" }}
-          >
-            <CaretCircleLeft
-              className={classes.fusionCaretCircleIcon}
-              weight="light"
+
+      <div className={classes.headerSection}>
+        <Flex justify="space-between" align="center">
+          <Flex gap="md" align="center">
+            <Select
+              placeholder="Sort by"
+              data={categories}
+              value={sortedBy}
+              onChange={(value) => setSortedBy(value)}
+              style={{ width: "150px" }}
+              checkIconPosition="right"
             />
-          </Button>
+            <Button
+              onClick={refreshData}
+              variant="light"
+              loading={loading}
+              disabled={loading}
+            >
+              Refresh
+            </Button>
+          </Flex>
 
-          <div className={classes.fusionTabsContainer} ref={tabsListRef}>
-            <Tabs value={activeTab} onChange={setActiveTab}>
-              <Tabs.List style={{ display: "flex", flexWrap: "nowrap" }}>
-                {tabItems.map((item, index) => (
-                  <Tabs.Tab
-                    value={`${index}`}
-                    key={index}
-                    className={
-                      activeTab === `${index}`
-                        ? classes.fusionActiveRecentTab
-                        : ""
-                    }
-                  >
-                    <Flex gap="4px">
-                      <Text>{item.title}</Text>
-                    </Flex>
-                  </Tabs.Tab>
-                ))}
-              </Tabs.List>
-            </Tabs>
-          </div>
-
-          <Button
-            onClick={() => handleTabChange("next")}
-            variant="default"
-            p={0}
-            style={{ border: "none" }}
-          >
-            <CaretCircleRight
-              className={classes.fusionCaretCircleIcon}
-              weight="light"
-            />
-          </Button>
+          <Flex gap="xs">
+            <Button
+              onClick={() => handleScroll("left")}
+              variant="light"
+              size="sm"
+              p="xs"
+            >
+              <CaretCircleLeft size={20} />
+            </Button>
+            <Button
+              onClick={() => handleScroll("right")}
+              variant="light"
+              size="sm"
+              p="xs"
+            >
+              <CaretCircleRight size={20} />
+            </Button>
+          </Flex>
         </Flex>
-        <Flex align="center" mt="md" rowGap="1rem" columnGap="4rem" wrap="wrap">
-          <Select
-            classNames={{
-              option: classes.selectoptions,
-              input: classes.selectinputs,
-            }}
-            variant="filled"
-            leftSection={<SortAscending />}
-            data={categories}
-            value={sortedBy}
-            onChange={setSortedBy}
-            placeholder="Sort By"
-          />
-        </Flex>
-      </Flex>
+      </div>
 
-      {tabItems[parseInt(activeTab, 10)]?.component}
-    </>
+      <Tabs
+        value={activeTab}
+        onTabChange={setActiveTab}
+        defaultValue="0"
+        orientation="horizontal"
+        tabPadding="md"
+      >
+        <Tabs.List ref={tabsListRef} style={{ overflowX: "auto" }}>
+          {tabItems.map((item, index) => (
+            <Tabs.Tab
+              key={index}
+              value={String(index)}
+              leftSection={<SortAscending size={14} />}
+            >
+              {item.title}
+            </Tabs.Tab>
+          ))}
+        </Tabs.List>
+
+        {tabItems.map((item, index) => (
+          <Tabs.Panel key={index} value={String(index)}>
+            {item.component}
+          </Tabs.Panel>
+        ))}
+      </Tabs>
+    </div>
   );
 }
 

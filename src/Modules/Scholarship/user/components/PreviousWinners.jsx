@@ -1,22 +1,9 @@
 import { useState } from "react";
 import { CaretDown } from "@phosphor-icons/react";
 import axios from "axios";
-import {
-  Select,
-  Button,
-  Text,
-  Box,
-  Loader,
-} from "@mantine/core";
-import {
-  MantineReactTable,
-  useMantineReactTable,
-} from "mantine-react-table";
-import {
-  mkConfig,
-  generateCsv,
-  download,
-} from "export-to-csv";
+import { Select, Button, Text, Box, Loader } from "@mantine/core";
+import { MantineReactTable, useMantineReactTable } from "mantine-react-table";
+import { mkConfig, generateCsv, download } from "export-to-csv";
 import { IconDownload } from "@tabler/icons-react";
 import styles from "./PreviousWinners.module.css";
 import { getPreviousWinnersRoute } from "../../../../routes/SPACSRoutes";
@@ -143,9 +130,7 @@ function PreviousWinners() {
             disabled={
               !table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
             }
-            onClick={() =>
-              handleExportRows(table.getSelectedRowModel().rows)
-            }
+            onClick={() => handleExportRows(table.getSelectedRowModel().rows)}
             leftIcon={<IconDownload />}
             className="expbtn"
           >

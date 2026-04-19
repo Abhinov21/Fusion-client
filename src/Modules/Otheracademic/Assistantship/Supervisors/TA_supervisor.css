@@ -4,7 +4,7 @@
   max-width: 800px;
   margin: 20px auto;
   border-radius: 10px;
-  background-color: #F5F7F8; /* Light grey background */
+  background-color: #f5f7f8; /* Light grey background */
 }
 
 /* Flexbox styling for the form layout */
@@ -27,7 +27,7 @@
 
 /* Submit button styling */
 .submit-btn {
-  background-color: #007BFF; /* Blue background */
+  background-color: #007bff; /* Blue background */
   color: white;
   border: none;
   margin: 20px auto; /* Center the button */
@@ -46,7 +46,7 @@
 
 /* Title styling for the form */
 .form-title {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   margin-bottom: 20px;
   font-size: 24px;
   font-weight: bold;
@@ -76,7 +76,7 @@
 
 .assistantship-form .mantine-TextInput-root,
 .assistantship-form .mantine-Select-root {
-  background-color: #F5F7F8; /* Uniform input background */
+  background-color: #f5f7f8; /* Uniform input background */
   border-radius: 5px;
 }
 

@@ -25,3 +25,8 @@ dist-ssr
 
 #Package-lock.json
 package-lock.json
+
+# RSPC Module Documentation
+src/Modules/RSPC/IMPLEMENTATION_GUIDE.md
+src/Modules/RSPC/COMPLETION_REPORT.md
+src/Modules/RSPC/ARCHITECTURE.md

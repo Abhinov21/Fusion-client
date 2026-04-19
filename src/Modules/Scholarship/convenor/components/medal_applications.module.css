@@ -57,7 +57,8 @@
   min-width: 600px; /* Ensure the table doesn't shrink too much on smaller screens */
 }
 
-.table th, .table td {
+.table th,
+.table td {
   border: 1px solid #ccc;
   padding: 10px;
   text-align: left;
@@ -95,7 +96,7 @@
   opacity: 0.8;
 }
 
-.exportButton{
+.exportButton {
   background-color: #6d7d92;
   width: 20%;
   border-radius: 3px;
@@ -133,12 +134,12 @@
   background-color: #ffffff;
 }
 
-.export{
+.export {
   display: flex;
   gap: 10px;
 }
 
-.statusButtons{
+.statusButtons {
   display: flex;
   gap: 8px;
 }

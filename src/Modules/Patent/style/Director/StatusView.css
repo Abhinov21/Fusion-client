@@ -52,7 +52,10 @@
   font-weight: 500;
   font-size: 15px;
   border-radius: 6px;
-  transition: background 0.18s, color 0.18s, border 0.18s;
+  transition:
+    background 0.18s,
+    color 0.18s,
+    border 0.18s;
   box-shadow: none;
   min-width: 70px;
   margin-right: 16px;

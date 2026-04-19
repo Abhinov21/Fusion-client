@@ -107,7 +107,6 @@ function ForgotPassword() {
 
   return (
     <Center w="100%">
-
       <Container w={420} my={100}>
         <Title ta="center" fw={700} fz={28} mb={15} c="#333">
           Reset Password

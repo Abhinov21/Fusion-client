@@ -62,7 +62,9 @@
 .tableRow {
   background-color: #ffffff;
   border-radius: 8px;
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .viewButton {
@@ -70,7 +72,9 @@
   align-items: center;
   gap: 6px;
   font-weight: 600;
-  transition: color 0.2s ease, transform 0.2s ease;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
 /* Responsive Design */

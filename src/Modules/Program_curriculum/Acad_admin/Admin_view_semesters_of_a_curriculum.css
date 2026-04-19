@@ -32,14 +32,18 @@
   max-width: 210px;
   overflow-x: visible;
   opacity: 0;
-  transition: max-height 0.4s ease-out, opacity 0.4s ease-out;
+  transition:
+    max-height 0.4s ease-out,
+    opacity 0.4s ease-out;
   border-radius: 5px;
 }
 
 .options-dropdown.open {
   opacity: 1;
   height: fit-content;
-  transition: max-height 0.4s ease-in, opacity 0.4s ease-in;
+  transition:
+    max-height 0.4s ease-in,
+    opacity 0.4s ease-in;
   min-width: 210px;
 }
 
@@ -98,7 +102,7 @@
   width: 100%;
   border-radius: 4px;
   transition: background-color 0.3s ease;
-  font-size: 14px;    
+  font-size: 14px;
 }
 .Link-slot-button {
   background-color: #62b6cb;
@@ -109,7 +113,7 @@
   width: 100%;
   border-radius: 4px;
   transition: background-color 0.3s ease;
-  font-size: 14px;    
+  font-size: 14px;
   margin-top: 20px;
 }
 .Link-slot-button:hover {
@@ -322,7 +326,8 @@
   font-size: 10px; /* Responsive font size */
 }
 
-.table-container th, .table-container td {
+.table-container th,
+.table-container td {
   padding: 10px; /* Cell padding */
   text-align: center; /* Centered text */
   border: 1px solid #ddd; /* Light border for a clean look */
@@ -351,7 +356,8 @@
   color: #007bff; /* Highlight strong text */
 }
 
-.table-container h2, .table-container h4 {
+.table-container h2,
+.table-container h4 {
   margin: 0; /* Reset margin */
   font-size: 12px; /* Responsive font size */
   color: #007bff; /* Color for headings */
@@ -371,7 +377,8 @@
 }
 
 /* Adjusting table header alignment */
-.table-container th:first-child, .table-container td:first-child {
+.table-container th:first-child,
+.table-container td:first-child {
   text-align: left; /* Left align first column */
 }
 
@@ -383,18 +390,19 @@
 /* Mobile responsiveness */
 @media (max-width: 768px) {
   .table-container table {
-      font-size: 10px; /* Larger font size on smaller screens */
+    font-size: 10px; /* Larger font size on smaller screens */
   }
 
-  .table-container th, .table-container td {
-      padding: 8px; /* Smaller padding for mobile */
+  .table-container th,
+  .table-container td {
+    padding: 8px; /* Smaller padding for mobile */
   }
 
-  .table-container h2, .table-container h4 {
-      font-size: 12px; /* Adjust heading size for mobile */
+  .table-container h2,
+  .table-container h4 {
+    font-size: 12px; /* Adjust heading size for mobile */
   }
 }
-
 
 .table-container {
   width: 100%;
@@ -405,7 +413,7 @@
   .table-container {
     max-width: 100%;
   }
-  
+
   .table-container table {
     min-width: 800px; /* Ensures the table doesn't shrink too much */
   }

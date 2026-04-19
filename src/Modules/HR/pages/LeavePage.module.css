@@ -1,13 +1,12 @@
 /* LeavePage.module.css */
 .fullWidthGrid {
-  width: 100% !important;  /* Ensure it takes full width */
+  width: 100% !important; /* Ensure it takes full width */
   margin: 0;
-                 /* Reset margin */
-  padding: 0;  
-  padding-top: 50px;            /* Reset padding */
-  box-sizing: border-box;   /* Ensure padding and border are included in the element's width/height */
+  /* Reset margin */
+  padding: 0;
+  padding-top: 50px; /* Reset padding */
+  box-sizing: border-box; /* Ensure padding and border are included in the element's width/height */
 }
-
 
 .fusionTabsContainer {
   display: flex;
@@ -28,7 +27,6 @@
 .fusionCaretCircleIcon {
   margin: 0;
   font-size: 2rem;
-  
 }
 
 .flexContainer {
@@ -63,4 +61,3 @@
 
 /* You can add more styles as needed */
 /* //next button styling */
-

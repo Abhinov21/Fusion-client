@@ -16,7 +16,7 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
-  border-top: 2px solid #17ABFF;
+  border-top: 2px solid #17abff;
   padding-top: 1rem;
 }
 
@@ -77,7 +77,7 @@
 }
 
 .icon {
-  color: #17ABFF;
+  color: #17abff;
 }
 
 /* Responsive breakpoints */

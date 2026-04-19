@@ -1,0 +1,36 @@
+.testResults {
+  padding: 1rem;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  border-left: 4px solid #2e7d32;
+}
+
+.testResults h2 {
+  margin: 0 0 1rem 0;
+  font-size: 1.2rem;
+}
+
+.checklist {
+  padding: 1rem;
+  background-color: #fff3e0;
+  border-radius: 8px;
+  border-left: 4px solid #f57c00;
+}
+
+.checklist h2 {
+  margin: 0 0 1rem 0;
+  font-size: 1.2rem;
+}
+
+.checklist ul {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.checklist li {
+  margin-bottom: 0.5rem;
+}
+
+.checklist strong {
+  color: #1976d2;
+}

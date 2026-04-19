@@ -23,7 +23,7 @@ function DirectorMainDashboard() {
     { title: "Dashboard" }, // Tab 0
     { title: "New Applications" }, // Tab 1
     { title: "Reviewed Applications" }, // Tab 2
-    { title: "Notifications" }, // Tab 3 
+    { title: "Notifications" }, // Tab 3
   ];
 
   useEffect(() => {

@@ -18,76 +18,49 @@ import {
   ArrowDown,
   ArrowsDownUp,
 } from "@phosphor-icons/react";
-import axios from "axios";
 import classes from "../../styles/tableStyle.module.css";
-import { fetchStaffRoute } from "../../../../routes/RSPCRoutes";
 import StaffViewModal from "../modals/staffViewModal";
 import JoiningReportAndIDCardFormModal from "../modals/joiningReportAndIDCardFormModal";
 import { host } from "../../../../routes/globalRoutes";
+import { fetchStaff } from "../../services/rspcApi";
+import useTableSort from "../../hooks/useTableSort";
 
 function StaffTable({ projectData }) {
   const [scrolled, setScrolled] = useState(false);
   const [loading, setLoading] = useState(false);
   const [fetched, setFetched] = useState(true);
+  const [staff, setStaff] = useState([]);
   const role = useSelector((state) => state.user.role);
   const [documentModalOpened, setDocumentModalOpened] = useState(false);
   const [viewModalOpened, setViewModalOpened] = useState(false);
   const [selectedStaff, setSelectedStaff] = useState(null);
 
-  const [sortColumn, setSortColumn] = useState(null);
-  const [sortDirection, setSortDirection] = useState("asc");
-  const sortData = (data, column) => {
-    const sorted = [...data].sort((a, b) => {
-      if (a[column] === null || a[column] === undefined) return 1;
-      if (b[column] === null || b[column] === undefined) return -1;
+  // Use table sorting hook instead of inline sorting logic
+  const { sortedData, sortConfig, requestSort } = useTableSort();
 
-      const aValue =
-        typeof a[column] === "string" ? a[column].toLowerCase() : a[column];
-      const bValue =
-        typeof b[column] === "string" ? b[column].toLowerCase() : b[column];
-
-      if (aValue < bValue) return sortDirection === "asc" ? -1 : 1;
-      if (aValue > bValue) return sortDirection === "asc" ? 1 : -1;
-      return 0;
-    });
-    return sorted;
-  };
-  const handleSort = (column) => {
-    if (sortColumn === column) {
-      setSortDirection((prev) => (prev === "asc" ? "desc" : "asc"));
-    } else {
-      setSortColumn(column);
-      setSortDirection("asc");
-    }
-  };
-
-  const [staff, setStaff] = useState([]);
+  // Fetch staff data using service layer
   useEffect(() => {
-    setLoading(true);
-    const fetchStaffData = async () => {
-      const token = localStorage.getItem("authToken");
-      if (!token) return console.error("No authentication token found!");
+    if (!projectData?.pid) return;
 
+    const loadStaffData = async () => {
+      setLoading(true);
       try {
-        const response = await axios.get(fetchStaffRoute, {
-          params: { "pids[]": [projectData.pid], type: 3 },
-          headers: {
-            Authorization: `Token ${token}`,
-            "Content-Type": "application/json",
-          },
-          withCredentials: true, // Include credentials if necessary
+        const response = await fetchStaff({
+          "pids[]": [projectData.pid],
+          type: 3,
         });
-        console.log("Fetched Staff:", response.data);
-        setStaff(response.data);
-        setLoading(false);
+        setStaff(response);
+        setFetched(true);
       } catch (error) {
-        console.error("Error during fetching details:", error);
-        setLoading(false);
+        console.error("Error fetching staff:", error);
         setFetched(false);
+      } finally {
+        setLoading(false);
       }
     };
-    fetchStaffData();
-  }, projectData);
+
+    loadStaffData();
+  }, [projectData?.pid]);
 
   const handleViewClick = (row) => {
     setSelectedStaff(row);
@@ -98,7 +71,7 @@ function StaffTable({ projectData }) {
     setDocumentModalOpened(true);
   };
 
-  const displayedStaff = sortColumn ? sortData(staff, sortColumn) : staff;
+  const displayedStaff = sortedData(staff) || staff;
   const staffRows = displayedStaff.map((row, index) => {
     const startDate = row.start_date ? new Date(row.start_date) : null;
     const endDate =
@@ -182,7 +155,7 @@ function StaffTable({ projectData }) {
             <Table.Tr>
               <Table.Th
                 className={classes["header-cell"]}
-                onClick={() => handleSort("person")}
+                onClick={() => requestSort("person")}
               >
                 <div
                   style={{
@@ -192,8 +165,8 @@ function StaffTable({ projectData }) {
                   }}
                 >
                   Name
-                  {sortColumn === "person" ? (
-                    sortDirection === "asc" ? (
+                  {sortConfig.column === "person" ? (
+                    sortConfig.direction === "asc" ? (
                       <ArrowUp size={16} style={{ marginLeft: "5px" }} />
                     ) : (
                       <ArrowDown size={16} style={{ marginLeft: "5px" }} />
@@ -205,7 +178,7 @@ function StaffTable({ projectData }) {
               </Table.Th>
               <Table.Th
                 className={classes["header-cell"]}
-                onClick={() => handleSort("type")}
+                onClick={() => requestSort("type")}
               >
                 <div
                   style={{
@@ -215,8 +188,8 @@ function StaffTable({ projectData }) {
                   }}
                 >
                   Designation
-                  {sortColumn === "type" ? (
-                    sortDirection === "asc" ? (
+                  {sortConfig.column === "type" ? (
+                    sortConfig.direction === "asc" ? (
                       <ArrowUp size={16} style={{ marginLeft: "5px" }} />
                     ) : (
                       <ArrowDown size={16} style={{ marginLeft: "5px" }} />
@@ -228,7 +201,7 @@ function StaffTable({ projectData }) {
               </Table.Th>
               <Table.Th
                 className={classes["header-cell"]}
-                onClick={() => handleSort("start_date")}
+                onClick={() => requestSort("start_date")}
               >
                 <div
                   style={{
@@ -238,8 +211,8 @@ function StaffTable({ projectData }) {
                   }}
                 >
                   Joining Date
-                  {sortColumn === "start_date" ? (
-                    sortDirection === "asc" ? (
+                  {sortConfig.column === "start_date" ? (
+                    sortConfig.direction === "asc" ? (
                       <ArrowUp size={16} style={{ marginLeft: "5px" }} />
                     ) : (
                       <ArrowDown size={16} style={{ marginLeft: "5px" }} />
@@ -251,7 +224,7 @@ function StaffTable({ projectData }) {
               </Table.Th>
               <Table.Th
                 className={classes["header-cell"]}
-                onClick={() => handleSort("duration")}
+                onClick={() => requestSort("duration")}
               >
                 <div
                   style={{
@@ -261,8 +234,8 @@ function StaffTable({ projectData }) {
                   }}
                 >
                   Tenure
-                  {sortColumn === "duration" ? (
-                    sortDirection === "asc" ? (
+                  {sortConfig.column === "duration" ? (
+                    sortConfig.direction === "asc" ? (
                       <ArrowUp size={16} style={{ marginLeft: "5px" }} />
                     ) : (
                       <ArrowDown size={16} style={{ marginLeft: "5px" }} />
@@ -274,7 +247,7 @@ function StaffTable({ projectData }) {
               </Table.Th>
               <Table.Th
                 className={classes["header-cell"]}
-                onClick={() => handleSort("salary_per_month")}
+                onClick={() => requestSort("salary_per_month")}
               >
                 <div
                   style={{
@@ -284,8 +257,8 @@ function StaffTable({ projectData }) {
                   }}
                 >
                   Salary (per month)
-                  {sortColumn === "salary_per_month" ? (
-                    sortDirection === "asc" ? (
+                  {sortConfig.column === "salary_per_month" ? (
+                    sortConfig.direction === "asc" ? (
                       <ArrowUp size={16} style={{ marginLeft: "5px" }} />
                     ) : (
                       <ArrowDown size={16} style={{ marginLeft: "5px" }} />

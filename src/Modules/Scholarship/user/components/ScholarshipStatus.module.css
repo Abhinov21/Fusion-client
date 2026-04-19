@@ -131,7 +131,7 @@ tr:nth-child(odd) {
   margin: 10px; /* optional spacing */
 }
 
-.export{
+.export {
   display: flex;
   gap: 10px;
 }

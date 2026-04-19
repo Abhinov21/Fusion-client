@@ -46,7 +46,9 @@
   border-radius: 12px;
   background-color: #ffffff;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
   height: 100%;
   width: 100%;
 }
@@ -95,7 +97,9 @@
   color: #15abff;
   font-size: 14px;
   font-weight: 500;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 #pms-view-application-button:hover {
@@ -112,7 +116,9 @@
   border-radius: 12px;
   background-color: #ffffff;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 #pms-empty-state-card:hover {
@@ -127,7 +133,9 @@
   color: #15abff;
   font-size: 14px;
   font-weight: 500;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 #pms-empty-state-card button:hover {
@@ -332,15 +340,15 @@
   #pms-key-dates-grid {
     grid-template-columns: 1fr;
   }
-  
+
   #pms-key-date-card {
     padding: 12px;
   }
-  
+
   #pms-key-date-title {
     font-size: 13px;
   }
-  
+
   #pms-key-date-value {
     font-size: 14px;
   }
@@ -374,7 +382,6 @@
 #pms-workflow-stepper#pms-mobile-view #pms-mantine-Stepper-stepDescription {
   font-size: 13px;
 }
-
 
 /* Applicant Cards */
 #pms-applicant-card {
@@ -419,13 +426,13 @@
     flex-direction: column;
     align-items: flex-start;
   }
-  
+
   #pms-download-button-wrapper {
     margin-left: 0;
     margin-top: 8px;
     width: 100%;
   }
-  
+
   #pms-download-button {
     margin-left: 0;
     width: 100%;
@@ -462,17 +469,17 @@
     flex-direction: column;
     align-items: flex-start;
   }
-  
+
   #pms-field-label-container {
     width: 100%;
     margin-bottom: 8px;
   }
-  
+
   #pms-download-button-wrapper {
     margin-left: 0;
     width: 100%;
   }
-  
+
   #pms-download-button-container #pms-mantine-Button {
     width: 100%;
   }
@@ -518,7 +525,6 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-
 /* Responsive Behavior */
 @media (max-width: 1024px) {
   #pms-applications-grid {
@@ -548,36 +554,36 @@
   #pms-detail-container {
     padding: 0px;
   }
-  
+
   #pms-application-view-detail-header {
     margin-bottom: 20px;
   }
-  
+
   #pms-form-title {
     font-size: 20px;
   }
-  
+
   #pms-detail-section {
     padding: 15px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
   }
-  
+
   #pms-section-title {
     font-size: 16px;
   }
-  
+
   #pms-form-field {
     text-align: center; /* Center align all text in form fields */
     display: flex;
     flex-direction: column;
     align-items: center; /* Center child elements */
   }
-  
+
   #pms-form-actions {
     flex-direction: column;
     gap: 10px;
   }
-  
+
   #pms-form-actions #pms-mantine-Button {
     width: 100%;
   }
@@ -587,7 +593,6 @@
     text-align: center; /* Explicit center alignment */
     width: 100%; /* Ensure full width */
   }
-
 }
 
 @media (max-width: 480px) {
@@ -606,19 +611,19 @@
   #pms-form-title {
     font-size: 18px;
   }
-  
+
   #pms-section-title {
     font-size: 15px;
   }
-  
+
   #pms-field-label {
     font-size: 13px;
   }
-  
+
   #pms-field-value {
     font-size: 14px;
   }
-  
+
   #pms-applicant-card {
     padding: 12px;
   }

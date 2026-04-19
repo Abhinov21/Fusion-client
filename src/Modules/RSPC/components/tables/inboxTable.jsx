@@ -19,46 +19,23 @@ import {
   Eye,
   FileText,
 } from "@phosphor-icons/react";
-import axios from "axios";
 import classes from "../../styles/tableStyle.module.css";
-import { fetchStaffRoute, fetchPIDsRoute } from "../../../../routes/RSPCRoutes";
 import StaffViewModal from "../modals/staffViewModal";
 import { badgeColor } from "../../helpers/badgeColours";
 import SelectionCommitteeReportApprovalModal from "../modals/selectionCommitteeReportApprovalModal";
 import AdvertisementAndCommitteeApprovalModal from "../modals/advertisementAndCommitteeApprovalModal";
+import { fetchPIDs, fetchStaff } from "../../services/rspcApi";
+import useTableSort from "../../hooks/useTableSort";
 
 function InboxTable({ setActiveTab }) {
   const [scrolled, setScrolled] = useState(false);
   const [loading, setLoading] = useState(false);
   const [fetched, setFetched] = useState(true);
+  const [PIDs, setPIDs] = useState([]);
   const role = useSelector((state) => state.user.role);
 
-  const [sortColumn, setSortColumn] = useState(null);
-  const [sortDirection, setSortDirection] = useState("asc");
-  const sortData = (data, column) => {
-    const sorted = [...data].sort((a, b) => {
-      if (a[column] === null || a[column] === undefined) return 1;
-      if (b[column] === null || b[column] === undefined) return -1;
-
-      const aValue =
-        typeof a[column] === "string" ? a[column].toLowerCase() : a[column];
-      const bValue =
-        typeof b[column] === "string" ? b[column].toLowerCase() : b[column];
-
-      if (aValue < bValue) return sortDirection === "asc" ? -1 : 1;
-      if (aValue > bValue) return sortDirection === "asc" ? 1 : -1;
-      return 0;
-    });
-    return sorted;
-  };
-  const handleSort = (column) => {
-    if (sortColumn === column) {
-      setSortDirection((prev) => (prev === "asc" ? "desc" : "asc"));
-    } else {
-      setSortColumn(column);
-      setSortDirection("asc");
-    }
-  };
+  // Use table sorting hook instead of inline sorting logic
+  const { sortedData, sortConfig, requestSort } = useTableSort();
 
   const [viewModalOpened, setViewModalOpened] = useState(false);
   const [selectedStaff, setSelectedStaff] = useState(null);
@@ -69,26 +46,17 @@ function InboxTable({ setActiveTab }) {
     setAdvertisementAndCommitteeApprovalModalOpened,
   ] = useState(false);
 
-  const [PIDs, setPIDs] = useState([]);
+  // Fetch PIDs using service layer
   useEffect(() => {
-    const fetchPIDs = async () => {
-      const token = localStorage.getItem("authToken");
-      if (!token) return console.error("No authentication token found!");
+    const loadPIDs = async () => {
       try {
-        const response = await axios.get(fetchPIDsRoute(role), {
-          headers: {
-            Authorization: `Token ${token}`,
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        });
-        console.log("Fetched PIDs:", response.data);
-        setPIDs(response.data);
+        const response = await fetchPIDs(role);
+        setPIDs(response);
       } catch (error) {
-        console.error("Error during Axios GET:", error);
+        console.error("Error fetching PIDs:", error);
       }
     };
-    fetchPIDs();
+    loadPIDs();
   }, [role]);
 
   const handleViewClick = (row) => {
@@ -106,23 +74,19 @@ function InboxTable({ setActiveTab }) {
   };
 
   const [staffRequests, setStaffRequests] = useState([]);
+  // Fetch staff data using service layer
   useEffect(() => {
-    setLoading(true);
-    const fetchStaffData = async () => {
-      const token = localStorage.getItem("authToken");
-      if (!token) return console.error("No authentication token found!");
+    if (PIDs.length === 0) return;
 
+    const loadStaffData = async () => {
+      setLoading(true);
       try {
-        const response = await axios.get(fetchStaffRoute, {
-          params: { "pids[]": PIDs, role, type: 2 },
-          headers: {
-            Authorization: `Token ${token}`,
-            "Content-Type": "application/json",
-          },
-          withCredentials: true, // Include credentials if necessary
+        const response = await fetchStaff({
+          "pids[]": PIDs,
+          role,
+          type: 2,
         });
-        console.log("Fetched Staff:", response.data);
-        const enrichedData = response.data.map((row) => ({
+        const enrichedData = response.map((row) => ({
           ...row,
           approval_type:
             !row.final_selection || row.final_selection.length === 0
@@ -130,19 +94,18 @@ function InboxTable({ setActiveTab }) {
               : "Committee Report",
         }));
         setStaffRequests(enrichedData);
-        setLoading(false);
+        setFetched(true);
       } catch (error) {
-        console.error("Error during fetching details:", error);
-        setLoading(false);
+        console.error("Error fetching staff:", error);
         setFetched(false);
+      } finally {
+        setLoading(false);
       }
     };
-    fetchStaffData();
+    loadStaffData();
   }, [PIDs]);
 
-  const displayedStaff = sortColumn
-    ? sortData(staffRequests, sortColumn)
-    : staffRequests;
+  const displayedStaff = sortedData(staffRequests) || staffRequests;
   const staffRows = displayedStaff.map((row, index) => (
     <Table.Tr key={index}>
       <Table.Td className={classes["row-content"]}>
@@ -214,7 +177,7 @@ function InboxTable({ setActiveTab }) {
             <Table.Tr>
               <Table.Th
                 className={classes["header-cell"]}
-                onClick={() => handleSort("approval")}
+                onClick={() => requestSort("approval")}
               >
                 <div
                   style={{
@@ -224,8 +187,8 @@ function InboxTable({ setActiveTab }) {
                   }}
                 >
                   Status
-                  {sortColumn === "approval" ? (
-                    sortDirection === "asc" ? (
+                  {sortConfig.column === "approval" ? (
+                    sortConfig.direction === "asc" ? (
                       <ArrowUp size={16} style={{ marginLeft: "5px" }} />
                     ) : (
                       <ArrowDown size={16} style={{ marginLeft: "5px" }} />
@@ -237,7 +200,7 @@ function InboxTable({ setActiveTab }) {
               </Table.Th>
               <Table.Th
                 className={classes["header-cell"]}
-                onClick={() => handleSort("type")}
+                onClick={() => requestSort("type")}
               >
                 <div
                   style={{
@@ -247,8 +210,8 @@ function InboxTable({ setActiveTab }) {
                   }}
                 >
                   Staff Designation
-                  {sortColumn === "type" ? (
-                    sortDirection === "asc" ? (
+                  {sortConfig.column === "type" ? (
+                    sortConfig.direction === "asc" ? (
                       <ArrowUp size={16} style={{ marginLeft: "5px" }} />
                     ) : (
                       <ArrowDown size={16} style={{ marginLeft: "5px" }} />
@@ -260,7 +223,7 @@ function InboxTable({ setActiveTab }) {
               </Table.Th>
               <Table.Th
                 className={classes["header-cell"]}
-                onClick={() => handleSort("project_title")}
+                onClick={() => requestSort("project_title")}
               >
                 <div
                   style={{
@@ -270,8 +233,8 @@ function InboxTable({ setActiveTab }) {
                   }}
                 >
                   Project Title
-                  {sortColumn === "project_title" ? (
-                    sortDirection === "asc" ? (
+                  {sortConfig.column === "project_title" ? (
+                    sortConfig.direction === "asc" ? (
                       <ArrowUp size={16} style={{ marginLeft: "5px" }} />
                     ) : (
                       <ArrowDown size={16} style={{ marginLeft: "5px" }} />
@@ -283,7 +246,7 @@ function InboxTable({ setActiveTab }) {
               </Table.Th>
               <Table.Th
                 className={classes["header-cell"]}
-                onClick={() => handleSort("pid")}
+                onClick={() => requestSort("pid")}
               >
                 <div
                   style={{
@@ -293,8 +256,8 @@ function InboxTable({ setActiveTab }) {
                   }}
                 >
                   Project ID
-                  {sortColumn === "pid" ? (
-                    sortDirection === "asc" ? (
+                  {sortConfig.column === "pid" ? (
+                    sortConfig.direction === "asc" ? (
                       <ArrowUp size={16} style={{ marginLeft: "5px" }} />
                     ) : (
                       <ArrowDown size={16} style={{ marginLeft: "5px" }} />
@@ -306,7 +269,7 @@ function InboxTable({ setActiveTab }) {
               </Table.Th>
               <Table.Th
                 className={classes["header-cell"]}
-                onClick={() => handleSort("approval_type")}
+                onClick={() => requestSort("approval_type")}
               >
                 <div
                   style={{
@@ -316,8 +279,8 @@ function InboxTable({ setActiveTab }) {
                   }}
                 >
                   Approval Type
-                  {sortColumn === "approval_type" ? (
-                    sortDirection === "asc" ? (
+                  {sortConfig.column === "approval_type" ? (
+                    sortConfig.direction === "asc" ? (
                       <ArrowUp size={16} style={{ marginLeft: "5px" }} />
                     ) : (
                       <ArrowDown size={16} style={{ marginLeft: "5px" }} />

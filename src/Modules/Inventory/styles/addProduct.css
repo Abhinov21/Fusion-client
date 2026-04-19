@@ -21,8 +21,8 @@
   font-weight: bold;
 }
 
-.add-product-container form input, 
-.add-product-container form select, 
+.add-product-container form input,
+.add-product-container form select,
 .add-product-container form textarea {
   inline-size: 100%;
   padding: 12px;
@@ -48,10 +48,10 @@
 .add-product-container form button:hover {
   background-color: #0056b3;
 }
-  
+
 .required {
-  color: red; 
-  margin-left: 5px; 
+  color: red;
+  margin-left: 5px;
 }
 
 .error {

@@ -37,7 +37,8 @@ h2 {
   transition: all 0.3s ease-in-out;
 }
 
-.tabs span:hover, .tabs span.active {
+.tabs span:hover,
+.tabs span.active {
   border-bottom: 2px solid #000;
 }
 
@@ -46,7 +47,8 @@ h2 {
   border-collapse: collapse;
 }
 
-.course-table th, .course-table td {
+.course-table th,
+.course-table td {
   padding: 12px 20px;
   border: 1px solid #ddd;
   text-align: left;
@@ -84,7 +86,8 @@ h2 {
     font-size: 14px;
   }
 
-  .course-table th, .course-table td {
+  .course-table th,
+  .course-table td {
     padding: 10px 15px;
   }
 
@@ -108,7 +111,8 @@ h2 {
   }
 }
 
-@media (max-width: 375px) { /* iPhone SE */
+@media (max-width: 375px) {
+  /* iPhone SE */
   .dashboard-container {
     padding: 10px;
   }
@@ -130,7 +134,8 @@ h2 {
   }
 }
 
-@media (max-width: 360px) { /* Samsung Galaxy S8 */
+@media (max-width: 360px) {
+  /* Samsung Galaxy S8 */
   .dashboard-container {
     padding: 10px;
   }
@@ -143,7 +148,8 @@ h2 {
     font-size: 12px;
   }
 
-  .course-table th, .course-table td {
+  .course-table th,
+  .course-table td {
     font-size: 12px;
     padding: 8px 10px;
   }

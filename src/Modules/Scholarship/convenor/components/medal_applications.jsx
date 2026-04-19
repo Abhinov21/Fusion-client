@@ -235,24 +235,24 @@ function MedalApplications() {
       <Box className={styles.exportButtons}>
         <div className={styles.export}>
           <Button leftIcon={<IconDownload />} onClick={handleExportAll}>
-          Export CSV (All)
-        </Button>
-        <Button
-          leftIcon={<IconDownload />} 
-          disabled={ 
-            !table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
-          }
-          onClick={() => handleExportRows(table.getSelectedRowModel().rows)}
-        >
-          Export CSV (Selected)
-        </Button>
-        <Button
-          color="gray"
-          leftIcon={<IconDownload />}
-          onClick={handleDownloadAllMarksheets}
-        >
-          Download Marksheets ZIP
-        </Button>
+            Export CSV (All)
+          </Button>
+          <Button
+            leftIcon={<IconDownload />}
+            disabled={
+              !table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
+            }
+            onClick={() => handleExportRows(table.getSelectedRowModel().rows)}
+          >
+            Export CSV (Selected)
+          </Button>
+          <Button
+            color="gray"
+            leftIcon={<IconDownload />}
+            onClick={handleDownloadAllMarksheets}
+          >
+            Download Marksheets ZIP
+          </Button>
         </div>
       </Box>
     ),
